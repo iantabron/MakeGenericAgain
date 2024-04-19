@@ -15,12 +15,12 @@ To install it on other projects, add this to the csproj:
   </Target>
 ```
 
-You can optionally provide names of types to ignore (should include any type names containing the word 'Of' as a minimum)
+You can optionally provide names of types to ignore (should include any type names containing the word 'Of' or 'And' as a minimum)
 
 ```
   <Target Name="MakeGenericAgain" AfterTargets="NSwag" Condition="'$(Configuration)' == 'Debug'">
     <Exec IgnoreExitCode="true" Command="dotnet tool install --global makeGenericAgain" />
-    <Exec Command="makeGenericAgain -f $(SolutionDir)src\SDK\Net\v1\ClientGenerated.cs -i IgnorableOfType,AnotherOfIgnorable" />
+    <Exec Command="makeGenericAgain -f $(SolutionDir)src\SDK\Net\v1\ClientGenerated.cs -i IgnorableOfType,AnotherAndIgnorable" />
   </Target>
 ```
 
@@ -32,11 +32,10 @@ To run int use
 Or with ignorable type names
 
 ```
- makeGenericAgain -f "C:\Path\client.cs" -i "IgnorableOfType,AnotherOfIgnorable"
+ makeGenericAgain -f "C:\Path\client.cs" -i "IgnorableOfType,AnotherAndIgnorable"
 ```
 
 
 ## Links
-[Github Repository](https://github.com/fgilde/MakeGenericAgain) | 
-[Nuget Package](https://www.nuget.org/packages/MakeGenericAgain/)
+[Github Repository](https://github.com/iantabron/MakeGenericAgain) | [NuGet Package](https://www.nuget.org/packages/IanTabron.MakeGenericAgain/)
 #
