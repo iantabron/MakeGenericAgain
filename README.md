@@ -10,7 +10,7 @@ To install it on other projects, add this to the csproj:
 
 ```
   <Target Name="MakeGenericAgain" AfterTargets="NSwag" Condition="'$(Configuration)' == 'Debug'">
-    <Exec IgnoreExitCode="true" Command="dotnet tool install --global makeGenericAgain" />
+    <Exec IgnoreExitCode="true" Command="dotnet tool install --global IanTabron.MakeGenericAgain" />
     <Exec Command="makeGenericAgain -f $(SolutionDir)src\SDK\Net\v1\ClientGenerated.cs" />
   </Target>
 ```
@@ -19,7 +19,7 @@ You can optionally provide names of types to ignore (should include any type nam
 
 ```
   <Target Name="MakeGenericAgain" AfterTargets="NSwag" Condition="'$(Configuration)' == 'Debug'">
-    <Exec IgnoreExitCode="true" Command="dotnet tool install --global makeGenericAgain" />
+    <Exec IgnoreExitCode="true" Command="dotnet tool install --global IanTabron.MakeGenericAgain" />
     <Exec Command="makeGenericAgain -f $(SolutionDir)src\SDK\Net\v1\ClientGenerated.cs -i IgnorableOfType,AnotherAndIgnorable" />
   </Target>
 ```
