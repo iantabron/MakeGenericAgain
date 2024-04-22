@@ -2,7 +2,7 @@
   "profiles": {
     "MakeGenericAgain": {
       "commandName": "Project",
-      "commandLineArgs": "-f \"C:\\Users\\Ian.Tabron\\source\\DevOps\\WHSmithEurosortDespatch\\Breathe.WHSmith.Domain.ApiClient\\WHSmithDomainClients.cs\" -i \"EndOfChuteAllocation,EndOfChuteScanData\""
+      "commandLineArgs": "-f \"C:\\Users\\Ian.Tabron\\source\\DevOps\\WHSmithEurosortDespatch\\BreatheFramework\\Documents\\Breathe.Documents.ApiClient\\DocumentsServiceClients.cs\""
     }
   }
 }

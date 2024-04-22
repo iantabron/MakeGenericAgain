@@ -7,10 +7,10 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>makeGenericAgain</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Ian Tabron,Florian Gilde</Authors>
     <PackageId>IanTabron.MakeGenericAgain</PackageId>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.1.1</PackageVersion>
     <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>

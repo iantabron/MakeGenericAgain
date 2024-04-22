@@ -19,6 +19,9 @@ namespace MakeGenericAgain
             foreach (var property in properties)
             {
                 var paramName = property.GetCustomAttribute<FromCommandLineAttribute>()?.ParamName.EnsureStartsWith("-").ToLower();
+                if (!args.Keys.Contains(paramName))
+                    continue;
+
                 var value = args[paramName];
                 if (!string.IsNullOrWhiteSpace(value))
                 {
