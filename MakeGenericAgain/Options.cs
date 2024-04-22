@@ -4,10 +4,10 @@ namespace MakeGenericAgain
 {
     public class Options
     {
-        [FromCommandLine("f", nameof(FileName))]
+        [FromCommandLine("f")]
         public string FileName { get; set; }
 
-        [FromCommandLine("i", nameof(TypesToIgnore))]
-        public ICollection<string> TypesToIgnore { get; set; } = [];
+        [FromCommandLine("i")]
+        public List<string> TypesToIgnore { get; set; } = [];
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -9,50 +8,58 @@ namespace MakeGenericAgain
     {
         public static T Parse<T>(string[] args) where T : new()
         {
-            return Parse<T>(string.Join(" ", args));
+            var @params = GetParamsFromArgs(args);
+            return Parse<T>(@params);
         }
 
-        public static T Parse<T>(string args) where T : new()
+        public static T Parse<T>(Dictionary<string, string> args) where T : new()
         {
-            var res = new T();
-            var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var prop in props)
+            var result = new T();
+            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var property in properties)
             {
-                var namesforProp = (prop.GetCustomAttribute<FromCommandLineAttribute>()?.ParamNames.Select(s => s.EnsureStartsWith("-").ToLower()) ?? Enumerable.Empty<string>()).Concat(new [] {"-"+prop.Name.ToLower()}).Distinct();
-                foreach (var name in namesforProp)
+                var paramName = property.GetCustomAttribute<FromCommandLineAttribute>()?.ParamName.EnsureStartsWith("-").ToLower();
+                var value = args[paramName];
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    var indexOf = args.IndexOf(name, StringComparison.Ordinal);
-                    if (indexOf >= 0)
+                    if (IsCollection(property))
                     {
-                        var rest = args.Substring(indexOf + name.Length);
-                        var end = rest.IndexOf(" ");
-                        end = end > 0 ? end : rest.Length;
-                        var value = rest.Substring(0, end).Trim().Replace("\"", "");
-                        if (IsCollection(prop))
-                        {
-                            var values = value.Replace(" ", string.Empty).Split(',');
-                            prop.SetValue(res, values);
-                        }
-                        else
-                        {
-                            prop.SetValue(res, value);
-                        }
+                        var values = value.Replace(" ", string.Empty).Split(',').ToList();
+                        property.SetValue(result, values);
+                    }
+                    else
+                    {
+                        property.SetValue(result, value);
                     }
                 }
             }
-            return res;
+
+            return result;
+        }
+
+        private static Dictionary<string, string> GetParamsFromArgs(string[] args)
+        {
+            var @params = new Dictionary<string, string>();
+            for (var i = 0; i < args.Length; i += 2)
+            {
+                args[i] = args[i].EnsureStartsWith("-").ToLower();
+                @params.Add(args[i], args[i + 1]);
+            }
+
+            return @params;
         }
 
         private static string EnsureStartsWith(this string str, string toStartWith)
         {
             if (!str.StartsWith(toStartWith))
-                str = toStartWith + str;
+                str = $"{toStartWith}{str}";
+
             return str;
         }
 
         private static bool IsCollection(PropertyInfo prop)
         {
-            return prop.PropertyType != typeof(string) && typeof(ICollection).IsAssignableFrom(prop.PropertyType);
+            return prop.PropertyType != typeof(string) && prop.PropertyType == typeof(List<string>);
         }
     }
 }

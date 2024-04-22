@@ -5,11 +5,11 @@ namespace MakeGenericAgain
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class FromCommandLineAttribute: Attribute
     {
-        public FromCommandLineAttribute(params string[] paramNames)
+        public FromCommandLineAttribute(string paramName)
         {
-            ParamNames = paramNames;
+            ParamName = paramName;
         }
 
-        public string[] ParamNames { get; set; }
+        public string ParamName { get; set; }
     }
 }

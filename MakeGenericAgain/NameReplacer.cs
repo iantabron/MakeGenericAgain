@@ -7,20 +7,29 @@ namespace MakeGenericAgain
 {
     public static class NameReplacer
     {
+        private const string TEMP_TYPE_NAME = "[#X#]";
+
         public static string ReplaceToGeneric(string str, ICollection<string> typesToIgnore)
         {
             var toSplit = Regex.Replace(str, @"[^\w\.@-]", " ", RegexOptions.None, TimeSpan.FromSeconds(1.5)).Replace(".", " ");
             foreach (var word in toSplit.Split(" "))
             {
-                // ignore any types provided in options
-                if (typesToIgnore.Contains(word))
-                    continue;
+                var typeToReinstate = typesToIgnore.FirstOrDefault(word.Contains);
+                var wordToReplace = !string.IsNullOrWhiteSpace(typeToReinstate) ? word.Replace(typeToReinstate, TEMP_TYPE_NAME) : word;
 
-                if (word.Contains("Of") && !word.StartsWith("Of") && !word.EndsWith("Of") && !word.StartsWith("DateTime"))
+                if (wordToReplace.Contains("Of") &&
+                   !wordToReplace.StartsWith("Of") &&
+                   !wordToReplace.EndsWith("Of") &&
+                   !wordToReplace.StartsWith("DateTime"))
                 {
-                    var genericWordFor = GetGenericWordFor(word);
-                    if (word != genericWordFor)
+                    var genericWordFor = GetGenericWordFor(wordToReplace);
+                    if (wordToReplace != genericWordFor)
+                    {
+                        if (!string.IsNullOrWhiteSpace(typeToReinstate))
+                            genericWordFor = genericWordFor.Replace(TEMP_TYPE_NAME, typeToReinstate);
+
                         str = str.Replace(word, genericWordFor);
+                    }
                 }
             }
 
